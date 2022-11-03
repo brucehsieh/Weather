@@ -16,6 +16,8 @@
 		2EFB40BA2909086C003CB363 /* SimpleWeatherAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFB40B92909086C003CB363 /* SimpleWeatherAppUITestsLaunchTests.swift */; };
 		2EFB40C829090B6E003CB363 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2EFB40C729090B6E003CB363 /* SnapKit */; };
 		2EFB40CA290A78A3003CB363 /* MainPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFB40C9290A78A3003CB363 /* MainPageView.swift */; };
+		2EFB40CC290E6062003CB363 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFB40CB290E6062003CB363 /* Weather.swift */; };
+		2EFB40D22913818A003CB363 /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EFB40D12913818A003CB363 /* APIKey.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,8 @@
 		2EFB40B72909086C003CB363 /* SimpleWeatherAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleWeatherAppUITests.swift; sourceTree = "<group>"; };
 		2EFB40B92909086C003CB363 /* SimpleWeatherAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleWeatherAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		2EFB40C9290A78A3003CB363 /* MainPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageView.swift; sourceTree = "<group>"; };
+		2EFB40CB290E6062003CB363 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
+		2EFB40D12913818A003CB363 /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +83,9 @@
 		2EFB408A2909086A003CB363 = {
 			isa = PBXGroup;
 			children = (
+				2EFB40D0290E60E5003CB363 /* Controller */,
+				2EFB40CF290E60D9003CB363 /* View */,
+				2EFB40CD290E60B2003CB363 /* Model */,
 				2EFB40952909086A003CB363 /* SimpleWeatherApp */,
 				2EFB40AC2909086C003CB363 /* SimpleWeatherAppTests */,
 				2EFB40B62909086C003CB363 /* SimpleWeatherAppUITests */,
@@ -101,8 +108,6 @@
 			children = (
 				2EFB40962909086A003CB363 /* AppDelegate.swift */,
 				2EFB40982909086A003CB363 /* SceneDelegate.swift */,
-				2EFB409A2909086A003CB363 /* ViewController.swift */,
-				2EFB40C9290A78A3003CB363 /* MainPageView.swift */,
 				2EFB409F2909086C003CB363 /* Assets.xcassets */,
 				2EFB40A42909086C003CB363 /* Info.plist */,
 			);
@@ -124,6 +129,31 @@
 				2EFB40B92909086C003CB363 /* SimpleWeatherAppUITestsLaunchTests.swift */,
 			);
 			path = SimpleWeatherAppUITests;
+			sourceTree = "<group>";
+		};
+		2EFB40CD290E60B2003CB363 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2EFB40CB290E6062003CB363 /* Weather.swift */,
+				2EFB40D12913818A003CB363 /* APIKey.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		2EFB40CF290E60D9003CB363 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2EFB40C9290A78A3003CB363 /* MainPageView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2EFB40D0290E60E5003CB363 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2EFB409A2909086A003CB363 /* ViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,6 +295,8 @@
 				2EFB40972909086A003CB363 /* AppDelegate.swift in Sources */,
 				2EFB40CA290A78A3003CB363 /* MainPageView.swift in Sources */,
 				2EFB40992909086A003CB363 /* SceneDelegate.swift in Sources */,
+				2EFB40D22913818A003CB363 /* APIKey.swift in Sources */,
+				2EFB40CC290E6062003CB363 /* Weather.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

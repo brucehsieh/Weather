@@ -17,8 +17,18 @@ class MainPageView: UIView {
         let label = UILabel()
         label.textColor = .black
         label.backgroundColor = .clear
-        //        label.text = "Taiwan"
+                label.text = "Taiwan"
         label.font = UIFont(name: "Arial", size: 50)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    let timeLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.backgroundColor = .clear
+        label.text = "3:30 PM"
+        label.font = UIFont(name: "Arial", size: 25)
         label.textAlignment = .center
         return label
     }()
@@ -131,9 +141,17 @@ class MainPageView: UIView {
             make.centerX.equalToSuperview()
         }
         
+        addSubview(timeLabel)
+        timeLabel.snp.makeConstraints{ make in
+            make.top.equalTo(coutryLabel.snp.bottom)
+            make.height.equalTo(24)
+            make.leading.equalToSuperview().offset(16)
+            make.centerX.equalToSuperview()
+        }
+        
         addSubview(weatherImage)
         weatherImage.snp.makeConstraints{ make in
-            make.top.equalTo(coutryLabel.snp.bottom).offset(40)
+            make.top.equalTo(timeLabel.snp.bottom).offset(40)
             make.height.equalTo(300)
             make.leading.equalToSuperview().offset(16)
             make.centerX.equalToSuperview()
