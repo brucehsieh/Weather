@@ -13,7 +13,7 @@ class MainPageView: UIView {
     private let gradientLayer = CAGradientLayer()
     
     //MARK: - UI
-    let coutryLabel: UILabel = {
+    let cityLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.backgroundColor = .clear
@@ -133,8 +133,8 @@ class MainPageView: UIView {
     
     //MARK: - Autolayouts
     func setLayouts() {
-        addSubview(coutryLabel)
-        coutryLabel.snp.makeConstraints{ make in
+        addSubview(cityLabel)
+        cityLabel.snp.makeConstraints{ make in
             make.top.equalToSuperview().offset(240)
             make.height.equalTo(56)
             make.leading.equalToSuperview().offset(16)
@@ -143,7 +143,7 @@ class MainPageView: UIView {
         
         addSubview(timeLabel)
         timeLabel.snp.makeConstraints{ make in
-            make.top.equalTo(coutryLabel.snp.bottom)
+            make.top.equalTo(cityLabel.snp.bottom)
             make.height.equalTo(24)
             make.leading.equalToSuperview().offset(16)
             make.centerX.equalToSuperview()
