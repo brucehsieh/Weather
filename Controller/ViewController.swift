@@ -14,8 +14,11 @@ class ViewController: UIViewController {
     
     var weatherInfo: WeatherData? {
         didSet{
-            convertTime()
-            setLabels()
+            DispatchQueue.main.async {
+                self.convertTime()
+                self.setLabels()
+                self.setImage()
+            }
         }
     }
     
@@ -23,33 +26,41 @@ class ViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Weather🌤"
         navigationItem.searchController = searchController
-        //        searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.searchBar.barTintColor = .black
         searchController.searchBar.tintColor = .black
         searchController.searchBar.placeholder = "City, City code or Coordinate"
+        searchController.hidesNavigationBarDuringPresentation = false
     }
     
-    //MARK: - Setup tempMin & tempMax label
+    //MARK: - Setup tempMin & tempMax label & image
     func setLabels() {
+        if let weatherInfo = weatherInfo{
+//            switch mainPageView.segmentControl.selectedSegmentIndex {
+//            case 0:
+                mainPageView.cityLabel.text = weatherInfo.name
+                mainPageView.currentTempLabel.text = "\(weatherInfo.main.temp.rounded())°C"
+                mainPageView.tempMaxLabel.text = "\(weatherInfo.main.tempMax)°C"
+                mainPageView.tempMinLabel.text = "\(weatherInfo.main.tempMin)°C"
+                
+//            case 1:
+//                mainPageView.cityLabel.text = weatherInfo.name
+//                mainPageView.currentTempLabel.text = "\((weatherInfo.main.temp * 9/5 + 32).rounded())°F"
+//                mainPageView.tempMaxLabel.text = "\((weatherInfo.main.tempMax * 9/5 + 32).rounded())°F"
+//                mainPageView.tempMinLabel.text = "\((weatherInfo.main.tempMin * 9/5 + 32).rounded())°F"
+//            default:
+//                mainPageView.cityLabel.text = weatherInfo.name
+//                mainPageView.currentTempLabel.text = "\(weatherInfo.main.temp.rounded())°C"
+//                mainPageView.tempMaxLabel.text = "\(weatherInfo.main.tempMax)°C"
+//                mainPageView.tempMinLabel.text = "\(weatherInfo.main.tempMin)°C"
+//            }
+        }
+    }
+    
+    func setImage() {
         if let weatherInfo = weatherInfo {
-            switch mainPageView.segmentControl.selectedSegmentIndex {
-            case 0:
-                mainPageView.cityLabel.text = weatherInfo.name
-                mainPageView.currentTempLabel.text = "\(weatherInfo.main.temp.rounded())"
-                mainPageView.tempMaxLabel.text = "\(weatherInfo.main.tempMax)°C"
-                mainPageView.tempMinLabel.text = "\(weatherInfo.main.tempMin)°C"
-            case 1:
-                mainPageView.cityLabel.text = weatherInfo.name
-                mainPageView.currentTempLabel.text = "\((weatherInfo.main.temp * 9/5 + 32).rounded())"
-                mainPageView.tempMaxLabel.text = "\((weatherInfo.main.tempMax * 9/5 + 32).rounded())°F"
-                mainPageView.tempMinLabel.text = "\((weatherInfo.main.tempMin * 9/5 + 32).rounded())°F"
-            default:
-                mainPageView.cityLabel.text = weatherInfo.name
-                mainPageView.currentTempLabel.text = "\(weatherInfo.main.temp.rounded())"
-                mainPageView.tempMaxLabel.text = "\(weatherInfo.main.tempMax)°C"
-                mainPageView.tempMinLabel.text = "\(weatherInfo.main.tempMin)°C"
-            }
+            let image = getWeatherPNG(png: weatherInfo.weather[0].icon)
+            mainPageView.weatherImage.image = UIImage(data: image!)
         }
     }
     
@@ -68,31 +79,33 @@ class ViewController: UIViewController {
             let sunrisetime = sunriseDateFormatter.string(from: sunrise as Date)
             mainPageView.sunriseTimeLabel.text = "\(sunrisetime)"
             
-            let sunset = Date(timeIntervalSince1970: TimeInterval((weatherInfo.sys.sunrise)))
+            let sunset = Date(timeIntervalSince1970: TimeInterval((weatherInfo.sys.sunset)))
             let sunsetDateFormatter = DateFormatter()
-            sunriseDateFormatter.timeStyle = .short
+            sunsetDateFormatter.timeStyle = .short
             let sunsettime = sunsetDateFormatter.string(from: sunset as Date)
             mainPageView.sunsetTimeLabel.text = "\(sunsettime)"
         }
     }
     
     //MARK: - Get data
-    func getWeatherPNG(png: String) -> Data{
+    func getWeatherPNG(png: String) -> Data?{
         var imageData: Data!
-        if let url = URL(string: "http://openweathermap.org/img/wn/\(png).png"){
+        if let url = URL(string: "https://openweathermap.org/img/wn/\(png).png"){
             let data = try? Data(contentsOf: url)
             if let image = data{
                 imageData = image
+                return imageData
             }
         }
-        return imageData
+        return nil
     }
     
     func getWeatherData(city: String) {
         guard var urlComponents = URLComponents(string: "https://api.openweathermap.org/data/2.5/weather") else { return }
         let params: [String: String] = [
             "appid": "4a73261bd7f25c8b983715a2a9f1874a",
-            "q": city
+            "q": city,
+            "units": "metric"
         ]
         urlComponents.queryItems = params.map {URLQueryItem(name: $0.key, value: $0.value)}
         
@@ -115,6 +128,7 @@ class ViewController: UIViewController {
                     let weatherData = try JSONDecoder().decode(WeatherData.self, from: data)
                     print("============== Weather data ==============")
                     print(weatherData)
+                    self.weatherInfo = weatherData
                     print("============== Weather data ==============")
                 } catch {
                     print(error)
@@ -145,6 +159,7 @@ extension ViewController: UISearchBarDelegate {
             return
         }
         print(searchText)
+        getWeatherData(city: searchText)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

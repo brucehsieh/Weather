@@ -11,13 +11,15 @@ import SnapKit
 class MainPageView: UIView {
     //MARK: - Properties
     private let gradientLayer = CAGradientLayer()
+
+    var weatherInfo: WeatherData?
     
     //MARK: - UI
     let cityLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.backgroundColor = .clear
-                label.text = "Taiwan"
+        label.text = " "
         label.font = UIFont(name: "Arial", size: 50)
         label.textAlignment = .center
         return label
@@ -27,7 +29,7 @@ class MainPageView: UIView {
         let label = UILabel()
         label.textColor = .black
         label.backgroundColor = .clear
-        label.text = "3:30 PM"
+        label.text = " "
         label.font = UIFont(name: "Arial", size: 25)
         label.textAlignment = .center
         return label
@@ -37,6 +39,7 @@ class MainPageView: UIView {
         let image = UIImageView()
         image.backgroundColor = .clear
         image.image = UIImage(named: "01.jpg")
+        image.contentMode = .scaleAspectFit
         return image
     }()
     
@@ -50,32 +53,96 @@ class MainPageView: UIView {
         return label
     }()
     
+    let minLabel:UILabel = {
+        let label = UILabel()
+        label.text =  "Temp Min"
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        return label
+    }()
+    
     let tempMinLabel: UILabel = {
         let label = UILabel()
-        //        label.text = "TEMP MIN"
+        label.textAlignment = .center
+        return label
+    }()
+    
+    lazy var tempMinStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [minLabel, tempMinLabel])
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.alignment = .fill
+        return stackView
+    }()
+    
+    let maxLabel:UILabel = {
+        let label = UILabel()
+        label.text =  "Temp Max"
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.textAlignment = .center
         return label
     }()
     
     let tempMaxLabel: UILabel = {
         let label = UILabel()
-        //        label.text = "TEMP MAX"
+        label.textAlignment = .center
+        return label
+    }()
+
+    lazy var tempMaxStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [maxLabel, tempMaxLabel])
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.alignment = .fill
+        return stackView
+    }()
+    
+    let riseLabel:UILabel = {
+        let label = UILabel()
+        label.text =  "Sunrise"
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }()
     
     let sunriseTimeLabel: UILabel = {
         let label = UILabel()
-        //        label.text = "SUNRISE TIME"
+        label.textAlignment = .center
+        return label
+    }()
+    
+    lazy var sunriseStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [riseLabel, sunriseTimeLabel])
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.alignment = .fill
+        return stackView
+    }()
+    
+    let setLabel:UILabel = {
+        let label = UILabel()
+        label.text =  "Sunset"
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }()
     
     let sunsetTimeLabel: UILabel = {
         let label = UILabel()
-        //        label.text = "SUNSET TIME"
+        label.textAlignment = .center
         return label
     }()
     
+    lazy var sunsetStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [setLabel, sunsetTimeLabel])
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.alignment = .fill
+        return stackView
+    }()
+    
     lazy var labelStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [tempMinLabel, tempMaxLabel, sunriseTimeLabel, sunsetTimeLabel])
+        let stackView = UIStackView(arrangedSubviews: [tempMinStackView, tempMaxStackView, sunriseStackView, sunsetStackView])
         stackView.axis = .horizontal
         stackView.spacing = 12
         stackView.distribution = .fillEqually
@@ -98,13 +165,20 @@ class MainPageView: UIView {
     }()
     
     @objc func tempUnitChanged(_ segmentControl: UISegmentedControl) {
-        switch segmentControl.selectedSegmentIndex {
-        case 0: currentTempLabel.text = "°C"
-        case 1: currentTempLabel.text = "°F"
-        default: currentTempLabel.text = "°C"
+        if let weatherInfo = weatherInfo{
+        if segmentControl.selectedSegmentIndex == 0 {
+            cityLabel.text = weatherInfo.name
+            currentTempLabel.text = "\(weatherInfo.main.temp.rounded())°C"
+            tempMaxLabel.text = "\(weatherInfo.main.tempMax)°C"
+            tempMinLabel.text = "\(weatherInfo.main.tempMin)°C"
+        }else{
+            cityLabel.text = weatherInfo.name
+            currentTempLabel.text = "\((weatherInfo.main.temp * 9/5 + 32).rounded())°F"
+            tempMaxLabel.text = "\((weatherInfo.main.tempMax * 9/5 + 32).rounded())°F"
+            tempMinLabel.text = "\((weatherInfo.main.tempMin * 9/5 + 32).rounded())°F"
         }
     }
-    
+}
     private func setGradientLayer() {
         gradientLayer.colors = [
             UIColor.systemBlue.cgColor,
